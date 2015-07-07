@@ -1,0 +1,21 @@
+{
+    "name": "chrishayes/repo-deco",
+    "description": "Repository Decorators",
+    "require": {
+        "phpunit/phpunit-mock-objects": "^2.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Chris Hayes",
+            "email": "chris@moderncognition.com"
+        }
+    ],
+    "require-dev": {
+        "mockery/mockery": "^0.9.4"
+    }
+}
