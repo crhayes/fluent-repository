@@ -2,10 +2,11 @@
 
 use Closure;
 use App\Paginator;
+use App\Contracts\QueryInterface;
 use App\Contracts\RepositoryInterface;
 use Illuminate\Database\Eloquent\Model;
 
-abstract class EloquentRepository extends Repository implements RepositoryInterface {
+abstract class EloquentRepository implements RepositoryInterface {
 
 	protected $model;
 	protected $paginator;
@@ -15,22 +16,27 @@ abstract class EloquentRepository extends Repository implements RepositoryInterf
 		$this->paginator = $paginator;
 	}
 
-	public function get(array $columns = ['*']) {
-		parent::get();
-		return $this->model->get($columns);
+	public function get(QueryInterface $query, array $columns = ['*']) {
+		$queryBuilder = $this->model->newQuery();
+
+		foreach ($query->getFilters() as $filter) {
+			$filter($queryBuilder);
+		}
+
+		return $queryBuilder->get($columns);
 	}
 
-	public function find($id, array $columns = ['*']) {
+	public function find(QueryInterface $query, $id, array $columns = ['*']) {
 		return $this->model->find($id, $columns);
 	}
 
-	public function paginate($perPage = 10, $page = 1, array $columns = ['*']) {
+	public function paginate(QueryInterface $query, $perPage = 10, $page = 1, array $columns = ['*']) {
 		$query = $this->model->take($perPage)->offset($perPage * ($page - 1));
 
         return $this->paginator->make($query->get($columns), $query->count(), $perPage, $page);
 	}
 
-	public function chunk($perChunk, Closure $callback) {
+	public function chunk(QueryInterface $query, $perChunk, Closure $callback) {
 		return $this->model->chunk($perChunk, $callback);
 	}
 

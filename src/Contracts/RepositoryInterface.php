@@ -5,13 +5,13 @@ use Closure;
 
 interface RepositoryInterface {
 
-	public function get(array $columns);
+	public function get(QueryInterface $query, array $columns);
 
-	public function find($id, array $columns);
+	public function find(QueryInterface $query, $id, array $columns);
 
-	public function paginate($perPage, $page, array $columns);
+	public function paginate(QueryInterface $query, $perPage, $page, array $columns);
 
-	public function chunk($perChunk, Closure $callback);
+	public function chunk(QueryInterface $query, $perChunk, Closure $callback);
 
 	public function save(Model $model);
 
