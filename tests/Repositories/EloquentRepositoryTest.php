@@ -25,6 +25,36 @@ class EloquentRepositoryTest extends PHPUnit_Framework_TestCase {
 
 	// -----------------------------------------------------------------
 	// 
+	// Test helpers
+	//
+	// -----------------------------------------------------------------
+
+	private function createNewQueryBuilderFromModel() {
+		$this->mockModel
+			->shouldReceive('newQuery')->once()->andReturn($this->mockQueryBuilder);
+	}
+
+	private function shouldNotUseFilters() {
+		$this->mockQuery
+			->shouldNotReceive('getFilters');
+	}
+
+	private function shouldUseFiltersAndReturn($return) {
+		$this->mockQuery
+			->shouldReceive('getFilters')->once()->andReturn($return);
+	}
+
+	private function getMockedFilterClosure() {
+		return [
+			function ($query) {
+				$this->assertSame($this->mockQueryBuilder, $query);
+				$this->assertInstanceOf('Illuminate\Database\Eloquent\Builder', $query);
+			}
+		];
+	}
+
+	// -----------------------------------------------------------------
+	// 
 	// Test GET
 	//
 	// -----------------------------------------------------------------
@@ -33,11 +63,9 @@ class EloquentRepositoryTest extends PHPUnit_Framework_TestCase {
 		$defaultColumns = ['*'];
 		$mockedResult = 'this is a mocked result';
 
-		$this->mockModel
-			->shouldReceive('newQuery')->once()->andReturn($this->mockQueryBuilder);
+		$this->createNewQueryBuilderFromModel();
 
-		$this->mockQuery
-			->shouldNotReceive('getFilters');
+		$this->shouldNotUseFilters();
 
 		$this->mockQueryBuilder
 			->shouldReceive('get')->once()->with($defaultColumns)->andReturn($mockedResult);
@@ -51,11 +79,9 @@ class EloquentRepositoryTest extends PHPUnit_Framework_TestCase {
 		$columns = ['id', 'idea'];
 		$mockedResult = 'this is a mocked result';
 
-		$this->mockModel
-			->shouldReceive('newQuery')->once()->andReturn($this->mockQueryBuilder);
+		$this->createNewQueryBuilderFromModel();
 
-		$this->mockQuery
-			->shouldNotReceive('getFilters');
+		$this->shouldNotUseFilters();
 
 		$this->mockQueryBuilder
 			->shouldReceive('get')->once()->with($columns)->andReturn($mockedResult);
@@ -69,11 +95,9 @@ class EloquentRepositoryTest extends PHPUnit_Framework_TestCase {
 		$defaultColumns = ['*'];
 		$mockedResult = 'this is a mocked result';
 
-		$this->mockModel
-			->shouldReceive('newQuery')->once()->andReturn($this->mockQueryBuilder);
+		$this->createNewQueryBuilderFromModel();
 
-		$this->mockQuery
-			->shouldReceive('getFilters')->once()->andReturn([]);
+		$this->shouldUseFiltersAndReturn([]);
 
 		$this->mockQueryBuilder
 			->shouldReceive('get')->once()->with($defaultColumns)->andReturn($mockedResult);
@@ -87,18 +111,11 @@ class EloquentRepositoryTest extends PHPUnit_Framework_TestCase {
 		$columns = ['id', 'idea'];
 		$mockedResult = 'this is a mocked result';
 
-		$mockReturn = [
-			function ($query) {
-				$this->assertSame($this->mockQueryBuilder, $query);
-				$this->assertInstanceOf('Illuminate\Database\Eloquent\Builder', $query);
-			}
-		];
+		$mockReturn = $this->getMockedFilterClosure();
 
-		$this->mockModel
-			->shouldReceive('newQuery')->once()->andReturn($this->mockQueryBuilder);
+		$this->createNewQueryBuilderFromModel();
 
-		$this->mockQuery
-			->shouldReceive('getFilters')->once()->andReturn($mockReturn);
+		$this->shouldUseFiltersAndReturn($mockReturn);
 
 		$this->mockQueryBuilder
 			->shouldReceive('get')->once()->with($columns)->andReturn($mockedResult);
@@ -119,11 +136,9 @@ class EloquentRepositoryTest extends PHPUnit_Framework_TestCase {
 		$columns = ['*'];
 		$mockedResult = 'this is a mocked result';
 
-		$this->mockModel
-			->shouldReceive('newQuery')->once()->andReturn($this->mockQueryBuilder);
+		$this->createNewQueryBuilderFromModel();
 
-		$this->mockQuery
-			->shouldNotReceive('getFilters');
+		$this->shouldNotUseFilters();
 
 		$this->mockQueryBuilder
 			->shouldReceive('find')->once()->with($id, $columns)->andReturn($mockedResult);
@@ -138,11 +153,9 @@ class EloquentRepositoryTest extends PHPUnit_Framework_TestCase {
 		$columns = ['id', 'idea'];
 		$mockedResult = 'this is a mocked result';
 
-		$this->mockModel
-			->shouldReceive('newQuery')->once()->andReturn($this->mockQueryBuilder);
+		$this->createNewQueryBuilderFromModel();
 
-		$this->mockQuery
-			->shouldNotReceive('getFilters');
+		$this->shouldNotUseFilters();
 
 		$this->mockQueryBuilder
 			->shouldReceive('find')->once()->with($id, $columns)->andReturn($mockedResult);
@@ -157,11 +170,9 @@ class EloquentRepositoryTest extends PHPUnit_Framework_TestCase {
 		$columns = ['*'];
 		$mockedResult = 'this is a mocked result';
 
-		$this->mockModel
-			->shouldReceive('newQuery')->once()->andReturn($this->mockQueryBuilder);
+		$this->createNewQueryBuilderFromModel();
 
-		$this->mockQuery
-			->shouldReceive('getFilters')->once()->andReturn([]);
+		$this->shouldUseFiltersAndReturn([]);
 
 		$this->mockQueryBuilder
 			->shouldReceive('find')->once()->with($id, $columns)->andReturn($mockedResult);
@@ -176,18 +187,11 @@ class EloquentRepositoryTest extends PHPUnit_Framework_TestCase {
 		$columns = ['id', 'idea'];
 		$mockedResult = 'this is a mocked result';
 
-		$mockReturn = [
-			function ($query) {
-				$this->assertSame($this->mockQueryBuilder, $query);
-				$this->assertInstanceOf('Illuminate\Database\Eloquent\Builder', $query);
-			}
-		];
+		$mockReturn = $this->getMockedFilterClosure();
 
-		$this->mockModel
-			->shouldReceive('newQuery')->once()->andReturn($this->mockQueryBuilder);
+		$this->createNewQueryBuilderFromModel();
 
-		$this->mockQuery
-			->shouldReceive('getFilters')->once()->andReturn($mockReturn);
+		$this->shouldUseFiltersAndReturn($mockReturn);
 
 		$this->mockQueryBuilder
 			->shouldReceive('find')->once()->with($id, $columns)->andReturn($mockedResult);
@@ -214,11 +218,9 @@ class EloquentRepositoryTest extends PHPUnit_Framework_TestCase {
 		$mockInterimResult = 'interim result';
 		$mockPaginatedResult = 'paginated result';
 
-		$this->mockModel
-			->shouldReceive('newQuery')->once()->andReturn($this->mockQueryBuilder);
+		$this->createNewQueryBuilderFromModel();
 
-		$this->mockQuery
-			->shouldNotReceive('getFilters');
+		$this->shouldNotUseFilters();
 
 		$this->mockQueryBuilder
 			->shouldReceive('take')->once()->with($defaultPerPage)->andReturn($this->mockQueryBuilder)
@@ -245,11 +247,9 @@ class EloquentRepositoryTest extends PHPUnit_Framework_TestCase {
 		$mockInterimResult = 'interim result';
 		$mockPaginatedResult = 'paginated result';
 
-		$this->mockModel
-			->shouldReceive('newQuery')->once()->andReturn($this->mockQueryBuilder);
+		$this->createNewQueryBuilderFromModel();
 
-		$this->mockQuery
-			->shouldNotReceive('getFilters');
+		$this->shouldNotUseFilters();
 
 		$this->mockQueryBuilder
 			->shouldReceive('take')->once()->with($perPage)->andReturn($this->mockQueryBuilder)
@@ -275,18 +275,11 @@ class EloquentRepositoryTest extends PHPUnit_Framework_TestCase {
 
 		$mockInterimResult = 'interim result';
 		$mockPaginatedResult = 'paginated result';
-		$mockReturn = [
-			function ($query) {
-				$this->assertSame($this->mockQueryBuilder, $query);
-				$this->assertInstanceOf('Illuminate\Database\Eloquent\Builder', $query);
-			}
-		];
+		$mockReturn = $this->getMockedFilterClosure();
 
-		$this->mockModel
-			->shouldReceive('newQuery')->once()->andReturn($this->mockQueryBuilder);
+		$this->createNewQueryBuilderFromModel();
 
-		$this->mockQuery
-			->shouldReceive('getFilters')->once()->andReturn($mockReturn);
+		$this->shouldUseFiltersAndReturn($mockReturn);
 
 		$this->mockQueryBuilder
 			->shouldReceive('take')->once()->with($perPage)->andReturn($this->mockQueryBuilder)
@@ -316,11 +309,9 @@ class EloquentRepositoryTest extends PHPUnit_Framework_TestCase {
 		$defaultColumns = ['*'];
 		$mockedResult = ['this is a chunked result'];
 
-		$this->mockModel
-			->shouldReceive('newQuery')->once()->andReturn($this->mockQueryBuilder);
+		$this->createNewQueryBuilderFromModel();
 
-		$this->mockQuery
-			->shouldNotReceive('getFilters');
+		$this->shouldNotUseFilters();
 
 		$this->mockQueryBuilder
 			->shouldReceive('select')->once()->with($defaultColumns)->andReturn($this->mockQueryBuilder)
@@ -339,11 +330,9 @@ class EloquentRepositoryTest extends PHPUnit_Framework_TestCase {
 		$columns = ['id', 'idea'];
 		$mockedResult = ['this is a chunked result'];
 
-		$this->mockModel
-			->shouldReceive('newQuery')->once()->andReturn($this->mockQueryBuilder);
+		$this->createNewQueryBuilderFromModel();
 
-		$this->mockQuery
-			->shouldNotReceive('getFilters');
+		$this->shouldNotUseFilters();
 
 		$this->mockQueryBuilder
 			->shouldReceive('select')->once()->with($columns)->andReturn($this->mockQueryBuilder)
@@ -361,18 +350,11 @@ class EloquentRepositoryTest extends PHPUnit_Framework_TestCase {
 		};
 		$defaultColumns = ['*'];
 		$mockedResult = ['this is a chunked result'];
-		$mockReturn = [
-			function ($query) {
-				$this->assertSame($this->mockQueryBuilder, $query);
-				$this->assertInstanceOf('Illuminate\Database\Eloquent\Builder', $query);
-			}
-		];
+		$mockReturn = $this->getMockedFilterClosure();
 
-		$this->mockModel
-			->shouldReceive('newQuery')->once()->andReturn($this->mockQueryBuilder);
+		$this->createNewQueryBuilderFromModel();
 
-		$this->mockQuery
-			->shouldReceive('getFilters')->once()->andReturn($mockReturn);
+		$this->shouldUseFiltersAndReturn($mockReturn);
 
 		$this->mockQueryBuilder
 			->shouldReceive('select')->once()->with($defaultColumns)->andReturn($this->mockQueryBuilder)
