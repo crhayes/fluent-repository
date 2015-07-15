@@ -59,7 +59,7 @@ class EloquentRepositoryTest extends PHPUnit_Framework_TestCase {
 		$this->modelRepository->get(null, $columns);
 	}
 
-	public function testGetFiltersCalledWhenQueryObjectProvided() {
+	public function testGetFiltersCalledWhenQueryObjectProvidedInGetMethod() {
 		$defaultColumns = ['*'];
 
 		$this->mockModel
@@ -102,20 +102,20 @@ class EloquentRepositoryTest extends PHPUnit_Framework_TestCase {
 	//
 	// -----------------------------------------------------------------
 
-	public function testCanFindWithDefaultColumns() {
+	public function testCanFindWithDefaults() {
 		$id = 1;
-		$defaultColumns = ['*'];
+		$columns = ['*'];
 
 		$this->mockModel
 			->shouldReceive('newQuery')->once()->andReturn($this->mockQueryBuilder);
 
 		$this->mockQuery
-			->shouldReceive('getFilters')->once()->andReturn([]);
+			->shouldNotReceive('getFilters');
 
 		$this->mockQueryBuilder
-			->shouldReceive('find')->once()->with($id, $defaultColumns);
+			->shouldReceive('find')->once()->with($id, $columns);
 
-		$this->modelRepository->find($id, $this->mockQuery);
+		$this->modelRepository->find($id);
 	}
 
 	public function testCanFindWithSpecificColumns() {
@@ -126,12 +126,28 @@ class EloquentRepositoryTest extends PHPUnit_Framework_TestCase {
 			->shouldReceive('newQuery')->once()->andReturn($this->mockQueryBuilder);
 
 		$this->mockQuery
+			->shouldNotReceive('getFilters');
+
+		$this->mockQueryBuilder
+			->shouldReceive('find')->once()->with($id, $columns);
+
+		$this->modelRepository->find($id, null, $columns);
+	}
+
+	public function testGetFiltersCalledWhenQueryObjectProvidedInFindMethod() {
+		$id = 1;
+		$columns = ['*'];
+
+		$this->mockModel
+			->shouldReceive('newQuery')->once()->andReturn($this->mockQueryBuilder);
+
+		$this->mockQuery
 			->shouldReceive('getFilters')->once()->andReturn([]);
 
 		$this->mockQueryBuilder
 			->shouldReceive('find')->once()->with($id, $columns);
 
-		$this->modelRepository->find($id, $this->mockQuery, $columns);
+		$this->modelRepository->find($id, $this->mockQuery);
 	}
 
 	public function testFilterClosureReceivesQueryBuilderWhenFindMethodCalled() {
