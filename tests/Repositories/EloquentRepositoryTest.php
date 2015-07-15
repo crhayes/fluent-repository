@@ -29,7 +29,37 @@ class EloquentRepositoryTest extends PHPUnit_Framework_TestCase {
 	//
 	// -----------------------------------------------------------------
 
-	public function testCanGetWithDefaultColumns() {
+	public function testCanGetWithDefaults() {
+		$defaultColumns = ['*'];
+
+		$this->mockModel
+			->shouldReceive('newQuery')->once()->andReturn($this->mockQueryBuilder);
+
+		$this->mockQuery
+			->shouldNotReceive('getFilters');
+
+		$this->mockQueryBuilder
+			->shouldReceive('get')->once()->with($defaultColumns);
+
+		$this->modelRepository->get();
+	}
+
+	public function testCanGetWithSpecificColumns() {
+		$columns = ['id', 'idea'];
+
+		$this->mockModel
+			->shouldReceive('newQuery')->once()->andReturn($this->mockQueryBuilder);
+
+		$this->mockQuery
+			->shouldNotReceive('getFilters');
+
+		$this->mockQueryBuilder
+			->shouldReceive('get')->once()->with($columns);
+
+		$this->modelRepository->get(null, $columns);
+	}
+
+	public function testGetFiltersCalledWhenQueryObjectProvided() {
 		$defaultColumns = ['*'];
 
 		$this->mockModel
@@ -42,21 +72,6 @@ class EloquentRepositoryTest extends PHPUnit_Framework_TestCase {
 			->shouldReceive('get')->once()->with($defaultColumns);
 
 		$this->modelRepository->get($this->mockQuery);
-	}
-
-	public function testCanGetWithSpecificColumns() {
-		$columns = ['id', 'idea'];
-
-		$this->mockModel
-			->shouldReceive('newQuery')->once()->andReturn($this->mockQueryBuilder);
-
-		$this->mockQuery
-			->shouldReceive('getFilters')->once()->andReturn([]);
-
-		$this->mockQueryBuilder
-			->shouldReceive('get')->once()->with($columns);
-
-		$this->modelRepository->get($this->mockQuery, $columns);
 	}
 
 	public function testFilterClosureReceivesQueryBuilderWhenGetMethodCalled() {
