@@ -7,7 +7,7 @@ interface RepositoryInterface {
 
 	public function get(QueryInterface $query, array $columns);
 
-	public function find(QueryInterface $query, $id, array $columns);
+	public function find($id, QueryInterface $query, array $columns);
 
 	public function paginate(QueryInterface $query, $perPage, $page, array $columns);
 
