@@ -144,6 +144,38 @@ class EloquentRepositoryTest extends PHPUnit_Framework_TestCase {
 
 	// -----------------------------------------------------------------
 	// 
+	// Test PAGINATE
+	//
+	// -----------------------------------------------------------------
+
+	public function testCanPaginateWithDefaults() {
+		$defaultPerPage = 10;
+		$defaultPage = 1;
+		$defaultColumns = ['*'];
+
+		$offset = $defaultPerPage * ($defaultPage - 1);
+		$count = 10;
+
+		$mockInterimResult = 'interim result';
+		$mockPaginatedResult = 'paginated result';
+
+		$this->mockModel
+			->shouldReceive('newQuery')->once()->andReturn($this->mockQueryBuilder);
+
+		$this->mockQueryBuilder
+			->shouldReceive('take')->once()->with($defaultPerPage)->andReturn($this->mockQueryBuilder)
+			->shouldReceive('offset')->once()->with($offset)->andReturn($this->mockQueryBuilder)
+			->shouldReceive('get')->once()->with($defaultColumns)->andReturn($mockInterimResult)
+			->shouldReceive('count')->once()->andReturn($count);
+
+		$this->mockPaginator
+			->shouldReceive('make')->once()->with($mockInterimResult, $count, $defaultPerPage, $defaultPage)->andReturn($mockPaginatedResult);
+
+		$this->modelRepository->paginate();
+	}
+
+	// -----------------------------------------------------------------
+	// 
 	// Test SAVE
 	//
 	// -----------------------------------------------------------------
@@ -154,7 +186,7 @@ class EloquentRepositoryTest extends PHPUnit_Framework_TestCase {
 			->andReturn(true);
 
 		$result = $this->modelRepository->save($this->mockModel);
-		
+
 		$this->assertTrue($result);
 	}
 
@@ -170,7 +202,7 @@ class EloquentRepositoryTest extends PHPUnit_Framework_TestCase {
 			->andReturn(true);
 
 		$result = $this->modelRepository->delete($this->mockModel);
-		
+
 		$this->assertTrue($result);
 	}
 
@@ -186,7 +218,7 @@ class EloquentRepositoryTest extends PHPUnit_Framework_TestCase {
 			->andReturn(true);
 
 		$result = $this->modelRepository->purge($this->mockModel);
-		
+
 		$this->assertTrue($result);
 	}
 

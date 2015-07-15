@@ -9,9 +9,9 @@ interface RepositoryInterface {
 
 	public function find($id, QueryInterface $query, array $columns);
 
-	public function paginate(QueryInterface $query, $perPage, $page, array $columns);
+	public function paginate($perPage, $page, QueryInterface $query, array $columns);
 
-	public function chunk(QueryInterface $query, $perChunk, Closure $callback);
+	public function chunk($perChunk, Closure $callback, QueryInterface $query, array $columns);
 
 	public function save(Model $model);
 

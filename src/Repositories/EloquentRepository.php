@@ -16,34 +16,46 @@ abstract class EloquentRepository implements RepositoryInterface {
 		$this->paginator = $paginator;
 	}
 
-	public function get(QueryInterface $query, array $columns = ['*']) {
+	public function get(QueryInterface $query = null, array $columns = ['*']) {
 		$queryBuilder = $this->model->newQuery();
 
-		foreach ($query->getFilters() as $filter) {
-			$filter($queryBuilder);
+		if ($query) {
+			foreach ($query->getFilters() as $filter) {
+				$filter($queryBuilder);
+			}
 		}
 
 		return $queryBuilder->get($columns);
 	}
 
-	public function find($id, QueryInterface $query, array $columns = ['*']) {
+	public function find($id, QueryInterface $query = null, array $columns = ['*']) {
 		$queryBuilder = $this->model->newQuery();
 
-		foreach ($query->getFilters() as $filter) {
-			$filter($queryBuilder);
+		if ($query) {
+			foreach ($query->getFilters() as $filter) {
+				$filter($queryBuilder);
+			}
 		}
 
 		return $queryBuilder->find($id, $columns);
 	}
 
-	public function paginate(QueryInterface $query, $perPage = 10, $page = 1, array $columns = ['*']) {
-		$query = $this->model->take($perPage)->offset($perPage * ($page - 1));
+	public function paginate($perPage = 10, $page = 1, QueryInterface $query = null, array $columns = ['*']) {
+		$queryBuilder = $this->model->newQuery();
 
-        return $this->paginator->make($query->get($columns), $query->count(), $perPage, $page);
+		if ($query) {
+			foreach ($query->getFilters() as $filter) {
+				$filter($queryBuilder);
+			}
+		}
+
+		$queryBuilder->take($perPage)->offset($perPage * ($page - 1));
+
+        return $this->paginator->make($queryBuilder->get($columns), $queryBuilder->count(), $perPage, $page);
 	}
 
-	public function chunk(QueryInterface $query, $perChunk, Closure $callback) {
-		return $this->model->chunk($perChunk, $callback);
+	public function chunk($perChunk, Closure $callback, QueryInterface $query = null, array $columns = ['*']) {
+		return $this->model->select($columns)->chunk($perChunk, $callback);
 	}
 
 	public function save(Model $model) {
