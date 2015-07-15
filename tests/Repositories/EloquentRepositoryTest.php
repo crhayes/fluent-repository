@@ -193,6 +193,9 @@ class EloquentRepositoryTest extends PHPUnit_Framework_TestCase {
 		$this->mockModel
 			->shouldReceive('newQuery')->once()->andReturn($this->mockQueryBuilder);
 
+		$this->mockQuery
+			->shouldNotReceive('getFilters');
+
 		$this->mockQueryBuilder
 			->shouldReceive('take')->once()->with($defaultPerPage)->andReturn($this->mockQueryBuilder)
 			->shouldReceive('offset')->once()->with($offset)->andReturn($this->mockQueryBuilder)
@@ -203,6 +206,70 @@ class EloquentRepositoryTest extends PHPUnit_Framework_TestCase {
 			->shouldReceive('make')->once()->with($mockInterimResult, $count, $defaultPerPage, $defaultPage)->andReturn($mockPaginatedResult);
 
 		$this->modelRepository->paginate();
+	}
+
+	public function testCanPaginateWithSpecificParameters() {
+		$perPage = 20;
+		$page = 3;
+		$defaultColumns = ['*'];
+
+		$offset = $perPage * ($page - 1);
+		$count = 20;
+
+		$mockInterimResult = 'interim result';
+		$mockPaginatedResult = 'paginated result';
+
+		$this->mockModel
+			->shouldReceive('newQuery')->once()->andReturn($this->mockQueryBuilder);
+
+		$this->mockQuery
+			->shouldNotReceive('getFilters');
+
+		$this->mockQueryBuilder
+			->shouldReceive('take')->once()->with($perPage)->andReturn($this->mockQueryBuilder)
+			->shouldReceive('offset')->once()->with($offset)->andReturn($this->mockQueryBuilder)
+			->shouldReceive('get')->once()->with($defaultColumns)->andReturn($mockInterimResult)
+			->shouldReceive('count')->once()->andReturn($count);
+
+		$this->mockPaginator
+			->shouldReceive('make')->once()->with($mockInterimResult, $count, $perPage, $page)->andReturn($mockPaginatedResult);
+
+		$this->modelRepository->paginate($perPage, $page);
+	}
+
+	public function testFilterClosureReceivesQueryBuilderWhenPaginateMethodCalled() {
+		$perPage = 20;
+		$page = 3;
+		$defaultColumns = ['*'];
+
+		$offset = $perPage * ($page - 1);
+		$count = 20;
+
+		$mockInterimResult = 'interim result';
+		$mockPaginatedResult = 'paginated result';
+		$mockReturn = [
+			function ($query) {
+				$this->assertSame($this->mockQueryBuilder, $query);
+				$this->assertInstanceOf('Illuminate\Database\Eloquent\Builder', $query);
+			}
+		];
+
+		$this->mockModel
+			->shouldReceive('newQuery')->once()->andReturn($this->mockQueryBuilder);
+
+		$this->mockQuery
+			->shouldReceive('getFilters')->once()->andReturn($mockReturn);
+
+		$this->mockQueryBuilder
+			->shouldReceive('take')->once()->with($perPage)->andReturn($this->mockQueryBuilder)
+			->shouldReceive('offset')->once()->with($offset)->andReturn($this->mockQueryBuilder)
+			->shouldReceive('get')->once()->with($defaultColumns)->andReturn($mockInterimResult)
+			->shouldReceive('count')->once()->andReturn($count);
+
+		$this->mockPaginator
+			->shouldReceive('make')->once()->with($mockInterimResult, $count, $perPage, $page)->andReturn($mockPaginatedResult);
+
+		$this->modelRepository->paginate($perPage, $page, $this->mockQuery);
 	}
 
 	// -----------------------------------------------------------------
