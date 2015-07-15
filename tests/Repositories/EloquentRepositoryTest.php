@@ -142,4 +142,52 @@ class EloquentRepositoryTest extends PHPUnit_Framework_TestCase {
 		$this->modelRepository->find($id, $this->mockQuery, $columns);
 	}
 
+	// -----------------------------------------------------------------
+	// 
+	// Test SAVE
+	//
+	// -----------------------------------------------------------------
+
+	public function testCanSave() {
+		$this->mockModel
+			->shouldReceive('save')->once()
+			->andReturn(true);
+
+		$result = $this->modelRepository->save($this->mockModel);
+		
+		$this->assertTrue($result);
+	}
+
+	// -----------------------------------------------------------------
+	// 
+	// Test DELETE
+	//
+	// -----------------------------------------------------------------
+
+	public function testCanDelete() {
+		$this->mockModel
+			->shouldReceive('delete')->once()
+			->andReturn(true);
+
+		$result = $this->modelRepository->delete($this->mockModel);
+		
+		$this->assertTrue($result);
+	}
+
+	// -----------------------------------------------------------------
+	// 
+	// Test PURGE
+	//
+	// -----------------------------------------------------------------
+
+	public function testCanPurge() {
+		$this->mockModel
+			->shouldReceive('forceDelete')->once()
+			->andReturn(true);
+
+		$result = $this->modelRepository->purge($this->mockModel);
+		
+		$this->assertTrue($result);
+	}
+
 }
