@@ -274,6 +274,87 @@ class EloquentRepositoryTest extends PHPUnit_Framework_TestCase {
 
 	// -----------------------------------------------------------------
 	// 
+	// Test CHUNK
+	//
+	// -----------------------------------------------------------------
+
+	public function testCanChunkWithDefaults() {
+		$perChunk = 50;
+		$callback = function () {
+			return 'this is a callback';
+		};
+		$defaultColumns = ['*'];
+		$mockedResult = ['this is a chunked result'];
+
+		$this->mockModel
+			->shouldReceive('newQuery')->once()->andReturn($this->mockQueryBuilder);
+
+		$this->mockQuery
+			->shouldNotReceive('getFilters');
+
+		$this->mockQueryBuilder
+			->shouldReceive('select')->once()->with($defaultColumns)->andReturn($this->mockQueryBuilder)
+			->shouldReceive('chunk')->once()->with($perChunk, $callback)->andReturn($mockedResult);
+
+		$result = $this->modelRepository->chunk($perChunk, $callback);
+
+		$this->assertSame($result, $mockedResult);
+	}
+
+	public function testCanChunkWithSpecificColumns() {
+		$perChunk = 50;
+		$callback = function () {
+			return 'this is a callback';
+		};
+		$columns = ['id', 'idea'];
+		$mockedResult = ['this is a chunked result'];
+
+		$this->mockModel
+			->shouldReceive('newQuery')->once()->andReturn($this->mockQueryBuilder);
+
+		$this->mockQuery
+			->shouldNotReceive('getFilters');
+
+		$this->mockQueryBuilder
+			->shouldReceive('select')->once()->with($columns)->andReturn($this->mockQueryBuilder)
+			->shouldReceive('chunk')->once()->with($perChunk, $callback)->andReturn($mockedResult);
+
+		$result = $this->modelRepository->chunk($perChunk, $callback, null, $columns);
+
+		$this->assertSame($result, $mockedResult);
+	}
+
+	public function testFilterClosureReceivesQueryBuilderWhenChunkMethodCalled() {
+		$perChunk = 50;
+		$callback = function () {
+			return 'this is a callback';
+		};
+		$defaultColumns = ['*'];
+		$mockedResult = ['this is a chunked result'];
+		$mockReturn = [
+			function ($query) {
+				$this->assertSame($this->mockQueryBuilder, $query);
+				$this->assertInstanceOf('Illuminate\Database\Eloquent\Builder', $query);
+			}
+		];
+
+		$this->mockModel
+			->shouldReceive('newQuery')->once()->andReturn($this->mockQueryBuilder);
+
+		$this->mockQuery
+			->shouldReceive('getFilters')->once()->andReturn($mockReturn);
+
+		$this->mockQueryBuilder
+			->shouldReceive('select')->once()->with($defaultColumns)->andReturn($this->mockQueryBuilder)
+			->shouldReceive('chunk')->once()->with($perChunk, $callback)->andReturn($mockedResult);
+
+		$result = $this->modelRepository->chunk($perChunk, $callback, $this->mockQuery);
+
+		$this->assertSame($result, $mockedResult);
+	}
+
+	// -----------------------------------------------------------------
+	// 
 	// Test SAVE
 	//
 	// -----------------------------------------------------------------

@@ -55,7 +55,15 @@ abstract class EloquentRepository implements RepositoryInterface {
 	}
 
 	public function chunk($perChunk, Closure $callback, QueryInterface $query = null, array $columns = ['*']) {
-		return $this->model->select($columns)->chunk($perChunk, $callback);
+		$queryBuilder = $this->model->newQuery();
+
+		if ($query) {
+			foreach ($query->getFilters() as $filter) {
+				$filter($queryBuilder);
+			}
+		}
+
+		return $queryBuilder->select($columns)->chunk($perChunk, $callback);
 	}
 
 	public function save(Model $model) {
