@@ -31,6 +31,7 @@ class EloquentRepositoryTest extends PHPUnit_Framework_TestCase {
 
 	public function testCanGetWithDefaults() {
 		$defaultColumns = ['*'];
+		$mockedResult = 'this is a mocked result';
 
 		$this->mockModel
 			->shouldReceive('newQuery')->once()->andReturn($this->mockQueryBuilder);
@@ -39,13 +40,16 @@ class EloquentRepositoryTest extends PHPUnit_Framework_TestCase {
 			->shouldNotReceive('getFilters');
 
 		$this->mockQueryBuilder
-			->shouldReceive('get')->once()->with($defaultColumns);
+			->shouldReceive('get')->once()->with($defaultColumns)->andReturn($mockedResult);
 
-		$this->modelRepository->get();
+		$result = $this->modelRepository->get();
+
+		$this->assertSame($result, $mockedResult);
 	}
 
 	public function testCanGetWithSpecificColumns() {
 		$columns = ['id', 'idea'];
+		$mockedResult = 'this is a mocked result';
 
 		$this->mockModel
 			->shouldReceive('newQuery')->once()->andReturn($this->mockQueryBuilder);
@@ -54,13 +58,16 @@ class EloquentRepositoryTest extends PHPUnit_Framework_TestCase {
 			->shouldNotReceive('getFilters');
 
 		$this->mockQueryBuilder
-			->shouldReceive('get')->once()->with($columns);
+			->shouldReceive('get')->once()->with($columns)->andReturn($mockedResult);
 
-		$this->modelRepository->get(null, $columns);
+		$result = $this->modelRepository->get(null, $columns);
+
+		$this->assertSame($result, $mockedResult);
 	}
 
 	public function testGetCallsGetFiltersWhenQueryObjectProvided() {
 		$defaultColumns = ['*'];
+		$mockedResult = 'this is a mocked result';
 
 		$this->mockModel
 			->shouldReceive('newQuery')->once()->andReturn($this->mockQueryBuilder);
@@ -69,13 +76,16 @@ class EloquentRepositoryTest extends PHPUnit_Framework_TestCase {
 			->shouldReceive('getFilters')->once()->andReturn([]);
 
 		$this->mockQueryBuilder
-			->shouldReceive('get')->once()->with($defaultColumns);
+			->shouldReceive('get')->once()->with($defaultColumns)->andReturn($mockedResult);
 
-		$this->modelRepository->get($this->mockQuery);
+		$result = $this->modelRepository->get($this->mockQuery);
+
+		$this->assertSame($result, $mockedResult);
 	}
 
 	public function testFilterClosureReceivesQueryBuilderWhenGetMethodCalled() {
 		$columns = ['id', 'idea'];
+		$mockedResult = 'this is a mocked result';
 
 		$mockReturn = [
 			function ($query) {
@@ -91,9 +101,11 @@ class EloquentRepositoryTest extends PHPUnit_Framework_TestCase {
 			->shouldReceive('getFilters')->once()->andReturn($mockReturn);
 
 		$this->mockQueryBuilder
-			->shouldReceive('get')->once()->with($columns);
+			->shouldReceive('get')->once()->with($columns)->andReturn($mockedResult);
 
-		$this->modelRepository->get($this->mockQuery, $columns);
+		$result = $this->modelRepository->get($this->mockQuery, $columns);
+
+		$this->assertSame($result, $mockedResult);
 	}
 
 	// -----------------------------------------------------------------
