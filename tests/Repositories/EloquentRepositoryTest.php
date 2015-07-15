@@ -117,6 +117,7 @@ class EloquentRepositoryTest extends PHPUnit_Framework_TestCase {
 	public function testCanFindWithDefaults() {
 		$id = 1;
 		$columns = ['*'];
+		$mockedResult = 'this is a mocked result';
 
 		$this->mockModel
 			->shouldReceive('newQuery')->once()->andReturn($this->mockQueryBuilder);
@@ -125,14 +126,17 @@ class EloquentRepositoryTest extends PHPUnit_Framework_TestCase {
 			->shouldNotReceive('getFilters');
 
 		$this->mockQueryBuilder
-			->shouldReceive('find')->once()->with($id, $columns);
+			->shouldReceive('find')->once()->with($id, $columns)->andReturn($mockedResult);
 
-		$this->modelRepository->find($id);
+		$result = $this->modelRepository->find($id);
+
+		$this->assertSame($result, $mockedResult);
 	}
 
 	public function testCanFindWithSpecificColumns() {
 		$id = 1;
 		$columns = ['id', 'idea'];
+		$mockedResult = 'this is a mocked result';
 
 		$this->mockModel
 			->shouldReceive('newQuery')->once()->andReturn($this->mockQueryBuilder);
@@ -141,14 +145,17 @@ class EloquentRepositoryTest extends PHPUnit_Framework_TestCase {
 			->shouldNotReceive('getFilters');
 
 		$this->mockQueryBuilder
-			->shouldReceive('find')->once()->with($id, $columns);
+			->shouldReceive('find')->once()->with($id, $columns)->andReturn($mockedResult);
 
-		$this->modelRepository->find($id, null, $columns);
+		$result = $this->modelRepository->find($id, null, $columns);
+
+		$this->assertSame($result, $mockedResult);
 	}
 
 	public function testFindCallsGetFiltersWhenQueryObjectProvided() {
 		$id = 1;
 		$columns = ['*'];
+		$mockedResult = 'this is a mocked result';
 
 		$this->mockModel
 			->shouldReceive('newQuery')->once()->andReturn($this->mockQueryBuilder);
@@ -157,14 +164,17 @@ class EloquentRepositoryTest extends PHPUnit_Framework_TestCase {
 			->shouldReceive('getFilters')->once()->andReturn([]);
 
 		$this->mockQueryBuilder
-			->shouldReceive('find')->once()->with($id, $columns);
+			->shouldReceive('find')->once()->with($id, $columns)->andReturn($mockedResult);
 
-		$this->modelRepository->find($id, $this->mockQuery);
+		$result = $this->modelRepository->find($id, $this->mockQuery);
+
+		$this->assertSame($result, $mockedResult);
 	}
 
 	public function testFilterClosureReceivesQueryBuilderWhenFindMethodCalled() {
 		$id = 1;
 		$columns = ['id', 'idea'];
+		$mockedResult = 'this is a mocked result';
 
 		$mockReturn = [
 			function ($query) {
@@ -180,9 +190,11 @@ class EloquentRepositoryTest extends PHPUnit_Framework_TestCase {
 			->shouldReceive('getFilters')->once()->andReturn($mockReturn);
 
 		$this->mockQueryBuilder
-			->shouldReceive('find')->once()->with($id, $columns);
+			->shouldReceive('find')->once()->with($id, $columns)->andReturn($mockedResult);
 
-		$this->modelRepository->find($id, $this->mockQuery, $columns);
+		$result = $this->modelRepository->find($id, $this->mockQuery, $columns);
+
+		$this->assertSame($result, $mockedResult);
 	}
 
 	// -----------------------------------------------------------------
