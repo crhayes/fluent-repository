@@ -229,7 +229,9 @@ class EloquentRepositoryTest extends PHPUnit_Framework_TestCase {
 		$this->mockPaginator
 			->shouldReceive('make')->once()->with($mockInterimResult, $count, $defaultPerPage, $defaultPage)->andReturn($mockPaginatedResult);
 
-		$this->modelRepository->paginate();
+		$result = $this->modelRepository->paginate();
+
+		$this->assertSame($result, $mockPaginatedResult);
 	}
 
 	public function testCanPaginateWithSpecificParameters() {
@@ -258,7 +260,9 @@ class EloquentRepositoryTest extends PHPUnit_Framework_TestCase {
 		$this->mockPaginator
 			->shouldReceive('make')->once()->with($mockInterimResult, $count, $perPage, $page)->andReturn($mockPaginatedResult);
 
-		$this->modelRepository->paginate($perPage, $page);
+		$result = $this->modelRepository->paginate($perPage, $page);
+
+		$this->assertSame($result, $mockPaginatedResult);
 	}
 
 	public function testFilterClosureReceivesQueryBuilderWhenPaginateMethodCalled() {
@@ -293,7 +297,9 @@ class EloquentRepositoryTest extends PHPUnit_Framework_TestCase {
 		$this->mockPaginator
 			->shouldReceive('make')->once()->with($mockInterimResult, $count, $perPage, $page)->andReturn($mockPaginatedResult);
 
-		$this->modelRepository->paginate($perPage, $page, $this->mockQuery);
+		$result = $this->modelRepository->paginate($perPage, $page, $this->mockQuery);
+
+		$this->assertSame($result, $mockPaginatedResult);
 	}
 
 	// -----------------------------------------------------------------
