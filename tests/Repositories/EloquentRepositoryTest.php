@@ -59,7 +59,7 @@ class EloquentRepositoryTest extends PHPUnit_Framework_TestCase {
 		$this->modelRepository->get(null, $columns);
 	}
 
-	public function testGetFiltersCalledWhenQueryObjectProvidedInGetMethod() {
+	public function testGetCallsGetFiltersWhenQueryObjectProvided() {
 		$defaultColumns = ['*'];
 
 		$this->mockModel
@@ -134,7 +134,7 @@ class EloquentRepositoryTest extends PHPUnit_Framework_TestCase {
 		$this->modelRepository->find($id, null, $columns);
 	}
 
-	public function testGetFiltersCalledWhenQueryObjectProvidedInFindMethod() {
+	public function testFindCallsGetFiltersWhenQueryObjectProvided() {
 		$id = 1;
 		$columns = ['*'];
 
