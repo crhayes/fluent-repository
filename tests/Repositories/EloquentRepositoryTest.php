@@ -45,8 +45,12 @@ class EloquentRepositoryTest extends PHPUnit_Framework_TestCase {
 	}
 
 	private function getMockedFilterClosure() {
+		$this->mockQueryBuilder
+			->shouldReceive('testFilter')->once();
+
 		return [
 			function ($query) {
+				$this->mockQueryBuilder->testFilter();
 				$this->assertSame($this->mockQueryBuilder, $query);
 				$this->assertInstanceOf('Illuminate\Database\Eloquent\Builder', $query);
 			}
