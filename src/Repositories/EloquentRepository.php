@@ -26,7 +26,7 @@ abstract class EloquentRepository implements RepositoryInterface {
 		return $queryBuilder->get($columns);
 	}
 
-	public function find($id, QueryInterface $query = null, array $columns = ['*']) {
+	public function find($id, QueryInterface $query, array $columns = ['*']) {
 		$queryBuilder = $this->model->newQuery();
 
 		foreach ($query->getFilters() as $filter) {
