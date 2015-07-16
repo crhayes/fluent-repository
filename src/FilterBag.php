@@ -1,9 +1,8 @@
-<?php namespace SoapBox\Queries;
+<?php namespace SoapBox;
 
 use Closure;
-use SoapBox\Contracts\QueryInterface;
 
-class Query implements QueryInterface {
+class FilterBag {
 
 	protected $filters = [];
 
