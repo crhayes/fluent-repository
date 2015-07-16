@@ -1,4 +1,4 @@
-<?php namespace SoapBox\Repositories;
+<?php namespace SoapBox;
 
 use Closure;
 use SoapBox\Paginator;

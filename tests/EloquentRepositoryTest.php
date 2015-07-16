@@ -1,7 +1,7 @@
 <?php
 
 use Mockery as m;
-use SoapBox\Repositories\EloquentRepository;
+use SoapBox\EloquentRepository;
 
 class ModelRepository extends EloquentRepository {};
 
@@ -20,7 +20,7 @@ class EloquentRepositoryTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanBeInstantiated() {
-		$this->assertInstanceOf('SoapBox\Repositories\EloquentRepository', $this->modelRepository);
+		$this->assertInstanceOf('SoapBox\EloquentRepository', $this->modelRepository);
 	}
 
 	// -----------------------------------------------------------------
