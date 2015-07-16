@@ -5,7 +5,7 @@ use Mockery as m;
 class IdeaRepositoryTest extends PHPUnit_Framework_TestCase {
 
 	public function setUp() {
-		$this->mockQuery = m::mock('SoapBox\Contracts\QueryInterface');
+		$this->mockFilterBag = m::mock('SoapBox\FilterBag');
 		$this->mockQueryBuilder = m::mock('Illuminate\Database\Query\Builder');
 		$this->mockModel = m::mock('Idea');
 		$this->ideaRepository = new SoapBox\Repositories\IdeaRepository($this->mockModel);

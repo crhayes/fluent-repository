@@ -1,12 +1,12 @@
 <?php
 
 use Mockery as m;
-use SoapBox\Queries\Query;
+use SoapBox\FilterBag;
 
 class QueryTest extends PHPUnit_Framework_TestCase {
 
 	public function setUp() {
-		$this->query = new Query();
+		$this->filterBag = new FilterBag();
 	}
 
 	public function tearDown() {
@@ -14,12 +14,11 @@ class QueryTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanBeInstantiated() {
-		$this->assertInstanceOf('SoapBox\Queries\Query', $this->query);
-		$this->assertInstanceOf('SoapBox\Contracts\QueryInterface', $this->query);
+		$this->assertInstanceOf('SoapBox\FilterBag', $this->filterBag);
 	}
 
 	public function testItContainsNoFiltersByDefault() {
-		$filters = $this->query->getFilters();
+		$filters = $this->filterBag->getFilters();
 
 		$this->assertSame($filters, []);
 	}
@@ -29,11 +28,11 @@ class QueryTest extends PHPUnit_Framework_TestCase {
 			return 'filter';
 		};
 
-		$this->query->addFilter('filter', $filter);
+		$this->filterBag->addFilter('filter', $filter);
 
-		$this->assertSame(count($this->query->getFilters()), 1);
+		$this->assertSame(count($this->filterBag->getFilters()), 1);
 		$this->assertSame(
-			$this->query->getFilters(), 
+			$this->filterBag->getFilters(), 
 			['filter' => $filter]
 		);
 	}
@@ -46,12 +45,12 @@ class QueryTest extends PHPUnit_Framework_TestCase {
 			return 'filter 2';
 		};
 
-		$this->query->addFilter('filter1', $filter1);
-		$this->query->addFilter('filter2', $filter2);
+		$this->filterBag->addFilter('filter1', $filter1);
+		$this->filterBag->addFilter('filter2', $filter2);
 
-		$this->assertSame(count($this->query->getFilters()), 2);
+		$this->assertSame(count($this->filterBag->getFilters()), 2);
 		$this->assertSame(
-			$this->query->getFilters(), 
+			$this->filterBag->getFilters(), 
 			['filter1' => $filter1, 'filter2' => $filter2]
 		);
 	}
@@ -64,12 +63,12 @@ class QueryTest extends PHPUnit_Framework_TestCase {
 			return 'filter 2';
 		};
 
-		$this->query->addFilter('filter1', $filter1);
-		$this->query->addFilter('filter1', $filter2);
+		$this->filterBag->addFilter('filter1', $filter1);
+		$this->filterBag->addFilter('filter1', $filter2);
 
-		$this->assertSame(count($this->query->getFilters()), 1);
+		$this->assertSame(count($this->filterBag->getFilters()), 1);
 		$this->assertSame(
-			$this->query->getFilters(), 
+			$this->filterBag->getFilters(), 
 			['filter1' => $filter2]
 		);
 	}
@@ -79,11 +78,11 @@ class QueryTest extends PHPUnit_Framework_TestCase {
 			return 'filter 1';
 		};
 
-		$this->query->addFilter('filter1', $filter1);
-		$this->assertSame(count($this->query->getFilters()), 1);
+		$this->filterBag->addFilter('filter1', $filter1);
+		$this->assertSame(count($this->filterBag->getFilters()), 1);
 
-		$this->query->removeFilter('filter1');
-		$this->assertSame(count($this->query->getFilters()), 0);
+		$this->filterBag->removeFilter('filter1');
+		$this->assertSame(count($this->filterBag->getFilters()), 0);
 	}
 
 }

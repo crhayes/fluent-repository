@@ -8,7 +8,7 @@ class ModelRepository extends EloquentRepository {};
 class EloquentRepositoryTest extends PHPUnit_Framework_TestCase {
 
 	public function setUp() {
-		$this->mockQuery = m::mock('SoapBox\Queries\Query');
+		$this->mockFilterBag = m::mock('SoapBox\FilterBag');
 		$this->mockQueryBuilder = m::mock('Illuminate\Database\Eloquent\Builder');
 		$this->mockModel = m::mock('Illuminate\Database\Eloquent\Model');
 		$this->mockPaginator = m::mock('SoapBox\Paginator');
@@ -35,12 +35,12 @@ class EloquentRepositoryTest extends PHPUnit_Framework_TestCase {
 	}
 
 	private function shouldNotUseFilters() {
-		$this->mockQuery
+		$this->mockFilterBag
 			->shouldNotReceive('getFilters');
 	}
 
 	private function shouldUseFiltersAndReturn($return) {
-		$this->mockQuery
+		$this->mockFilterBag
 			->shouldReceive('getFilters')->once()->andReturn($return);
 	}
 
@@ -106,7 +106,7 @@ class EloquentRepositoryTest extends PHPUnit_Framework_TestCase {
 		$this->mockQueryBuilder
 			->shouldReceive('get')->once()->with($defaultColumns)->andReturn($mockedResult);
 
-		$result = $this->modelRepository->get($this->mockQuery);
+		$result = $this->modelRepository->get($this->mockFilterBag);
 
 		$this->assertSame($result, $mockedResult);
 	}
@@ -124,7 +124,7 @@ class EloquentRepositoryTest extends PHPUnit_Framework_TestCase {
 		$this->mockQueryBuilder
 			->shouldReceive('get')->once()->with($columns)->andReturn($mockedResult);
 
-		$result = $this->modelRepository->get($this->mockQuery, $columns);
+		$result = $this->modelRepository->get($this->mockFilterBag, $columns);
 
 		$this->assertSame($result, $mockedResult);
 	}
@@ -181,7 +181,7 @@ class EloquentRepositoryTest extends PHPUnit_Framework_TestCase {
 		$this->mockQueryBuilder
 			->shouldReceive('find')->once()->with($id, $columns)->andReturn($mockedResult);
 
-		$result = $this->modelRepository->find($id, $this->mockQuery);
+		$result = $this->modelRepository->find($id, $this->mockFilterBag);
 
 		$this->assertSame($result, $mockedResult);
 	}
@@ -200,7 +200,7 @@ class EloquentRepositoryTest extends PHPUnit_Framework_TestCase {
 		$this->mockQueryBuilder
 			->shouldReceive('find')->once()->with($id, $columns)->andReturn($mockedResult);
 
-		$result = $this->modelRepository->find($id, $this->mockQuery, $columns);
+		$result = $this->modelRepository->find($id, $this->mockFilterBag, $columns);
 
 		$this->assertSame($result, $mockedResult);
 	}
@@ -294,7 +294,7 @@ class EloquentRepositoryTest extends PHPUnit_Framework_TestCase {
 		$this->mockPaginator
 			->shouldReceive('make')->once()->with($mockInterimResult, $count, $perPage, $page)->andReturn($mockPaginatedResult);
 
-		$result = $this->modelRepository->paginate($perPage, $page, $this->mockQuery);
+		$result = $this->modelRepository->paginate($perPage, $page, $this->mockFilterBag);
 
 		$this->assertSame($result, $mockPaginatedResult);
 	}
@@ -364,7 +364,7 @@ class EloquentRepositoryTest extends PHPUnit_Framework_TestCase {
 			->shouldReceive('select')->once()->with($defaultColumns)->andReturn($this->mockQueryBuilder)
 			->shouldReceive('chunk')->once()->with($perChunk, $callback)->andReturn($mockedResult);
 
-		$result = $this->modelRepository->chunk($perChunk, $callback, $this->mockQuery);
+		$result = $this->modelRepository->chunk($perChunk, $callback, $this->mockFilterBag);
 
 		$this->assertSame($result, $mockedResult);
 	}

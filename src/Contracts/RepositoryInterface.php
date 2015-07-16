@@ -2,16 +2,17 @@
 
 use Model;
 use Closure;
+use SoapBox\FilterBag;
 
 interface RepositoryInterface {
 
-	public function get(QueryInterface $query, array $columns);
+	public function get(FilterBag $filterBag, array $columns);
 
-	public function find($id, QueryInterface $query, array $columns);
+	public function find($id, FilterBag $filterBag, array $columns);
 
-	public function paginate($perPage, $page, QueryInterface $query, array $columns);
+	public function paginate($perPage, $page, FilterBag $filterBag, array $columns);
 
-	public function chunk($perChunk, Closure $callback, QueryInterface $query, array $columns);
+	public function chunk($perChunk, Closure $callback, FilterBag $filterBag, array $columns);
 
 	public function save(Model $model);
 

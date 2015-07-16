@@ -14,8 +14,7 @@ class IdeaQueryTest extends PHPUnit_Framework_TestCase {
 
 	public function testItCanBeInstantiated() {
 		$this->assertInstanceOf('SoapBox\Queries\IdeaQuery', $this->mockIdeaQuery);
-		$this->assertInstanceOf('SoapBox\Queries\Query', $this->mockIdeaQuery);
-		$this->assertInstanceOf('SoapBox\Contracts\QueryInterface', $this->mockIdeaQuery);
+		$this->assertInstanceOf('SoapBox\FilterBag', $this->mockIdeaQuery);
 	}
 
 	public function testItCanFilterBySoapbox() {

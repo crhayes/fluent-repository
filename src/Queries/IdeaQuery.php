@@ -1,8 +1,9 @@
 <?php namespace SoapBox\Queries;
 
+use SoapBox\FilterBag;
 use SoapBox\Contracts\IdeaQueryInterface;
 
-class IdeaQuery extends Query implements IdeaQueryInterface {
+class IdeaQuery extends FilterBag implements IdeaQueryInterface {
 
 	public function filterBySoapbox($id) {
 		$this->addFilter('filterBySoapbox', function ($query) use ($id) {

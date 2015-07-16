@@ -1,6 +1,6 @@
 <?php namespace SoapBox\Contracts;
 
-interface IdeaQueryInterface extends QueryInterface {
+interface IdeaQueryInterface {
 
 	public function filterBySoapbox($id);
 
