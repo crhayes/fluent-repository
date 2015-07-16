@@ -1,5 +1,3 @@
 <?php namespace SoapBox\Ideas\Contracts;
 
-use SoapBox\Contracts\RepositoryInterface;
-
-interface Repository extends RepositoryInterface {}
+interface Repository extends \SoapBox\Contracts\Repository {}

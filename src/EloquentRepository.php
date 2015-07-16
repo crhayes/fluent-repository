@@ -1,10 +1,10 @@
 <?php namespace SoapBox;
 
 use Closure;
+use SoapBox\Contracts\Repository;
 use Illuminate\Database\Eloquent\Model;
-use SoapBox\Contracts\RepositoryInterface;
 
-abstract class EloquentRepository implements RepositoryInterface {
+abstract class EloquentRepository implements Repository {
 
 	protected $model;
 	protected $paginator;

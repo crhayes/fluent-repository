@@ -4,7 +4,7 @@ use Model;
 use Closure;
 use SoapBox\FilterBag;
 
-interface RepositoryInterface {
+interface Repository {
 
 	public function get(FilterBag $filterBag, array $columns);
 
