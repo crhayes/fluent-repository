@@ -1,7 +1,7 @@
 <?php
 
 use Mockery as m;
-use App\Queries\Query;
+use SoapBox\Queries\Query;
 
 class QueryTest extends PHPUnit_Framework_TestCase {
 
@@ -14,8 +14,8 @@ class QueryTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanBeInstantiated() {
-		$this->assertInstanceOf('App\Queries\Query', $this->query);
-		$this->assertInstanceOf('App\Contracts\QueryInterface', $this->query);
+		$this->assertInstanceOf('SoapBox\Queries\Query', $this->query);
+		$this->assertInstanceOf('SoapBox\Contracts\QueryInterface', $this->query);
 	}
 
 	public function testItContainsNoFiltersByDefault() {

@@ -1,9 +1,9 @@
-<?php namespace App\Repositories;
+<?php namespace SoapBox\Repositories;
 
 use Closure;
-use App\Paginator;
-use App\Contracts\QueryInterface;
-use App\Contracts\RepositoryInterface;
+use SoapBox\Paginator;
+use SoapBox\Contracts\QueryInterface;
+use SoapBox\Contracts\RepositoryInterface;
 use Illuminate\Database\Eloquent\Model;
 
 abstract class EloquentRepository implements RepositoryInterface {

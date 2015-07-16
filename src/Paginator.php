@@ -1,4 +1,4 @@
-<?php namespace App;
+<?php namespace SoapBox;
 
 use Illuminate\Pagination\LengthAwarePaginator;
 

@@ -5,7 +5,7 @@ use Mockery as m;
 class IdeaQueryTest extends PHPUnit_Framework_TestCase {
 
 	public function setUp() {
-		$this->mockIdeaQuery = m::mock('App\Queries\IdeaQuery[addFilter]');
+		$this->mockIdeaQuery = m::mock('SoapBox\Queries\IdeaQuery[addFilter]');
 	}
 
 	public function tearDown() {
@@ -13,9 +13,9 @@ class IdeaQueryTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testItCanBeInstantiated() {
-		$this->assertInstanceOf('App\Queries\IdeaQuery', $this->mockIdeaQuery);
-		$this->assertInstanceOf('App\Queries\Query', $this->mockIdeaQuery);
-		$this->assertInstanceOf('App\Contracts\QueryInterface', $this->mockIdeaQuery);
+		$this->assertInstanceOf('SoapBox\Queries\IdeaQuery', $this->mockIdeaQuery);
+		$this->assertInstanceOf('SoapBox\Queries\Query', $this->mockIdeaQuery);
+		$this->assertInstanceOf('SoapBox\Contracts\QueryInterface', $this->mockIdeaQuery);
 	}
 
 	public function testItCanFilterBySoapbox() {

@@ -1,4 +1,4 @@
-<?php namespace App\Contracts;
+<?php namespace SoapBox\Contracts;
 
 use Model;
 use Closure;

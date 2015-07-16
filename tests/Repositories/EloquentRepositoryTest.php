@@ -1,17 +1,17 @@
 <?php
 
 use Mockery as m;
-use App\Repositories\EloquentRepository;
+use SoapBox\Repositories\EloquentRepository;
 
 class ModelRepository extends EloquentRepository {};
 
 class EloquentRepositoryTest extends PHPUnit_Framework_TestCase {
 
 	public function setUp() {
-		$this->mockQuery = m::mock('App\Queries\Query');
+		$this->mockQuery = m::mock('SoapBox\Queries\Query');
 		$this->mockQueryBuilder = m::mock('Illuminate\Database\Eloquent\Builder');
 		$this->mockModel = m::mock('Illuminate\Database\Eloquent\Model');
-		$this->mockPaginator = m::mock('App\Paginator');
+		$this->mockPaginator = m::mock('SoapBox\Paginator');
 		$this->modelRepository = new ModelRepository($this->mockModel, $this->mockPaginator);
 	}
 
@@ -20,7 +20,7 @@ class EloquentRepositoryTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanBeInstantiated() {
-		$this->assertInstanceOf('App\Repositories\EloquentRepository', $this->modelRepository);
+		$this->assertInstanceOf('SoapBox\Repositories\EloquentRepository', $this->modelRepository);
 	}
 
 	// -----------------------------------------------------------------

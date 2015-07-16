@@ -1,7 +1,7 @@
-<?php namespace App\Queries;
+<?php namespace SoapBox\Queries;
 
 use Closure;
-use App\Contracts\QueryInterface;
+use SoapBox\Contracts\QueryInterface;
 
 class Query implements QueryInterface {
 

@@ -1,6 +1,6 @@
-<?php namespace App;
+<?php namespace SoapBox;
 
-use App\Contracts\IdeaRepositoryInterface;
+use SoapBox\Contracts\IdeaRepositoryInterface;
 
 class IdeaController {
 

@@ -1,3 +1,3 @@
-<?php namespace App\Exceptions;
+<?php namespace SoapBox\Exceptions;
 
 class ValidationException extends \Exception {}

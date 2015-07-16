@@ -1,6 +1,6 @@
-<?php namespace App\Queries;
+<?php namespace SoapBox\Queries;
 
-use App\Contracts\IdeaQueryInterface;
+use SoapBox\Contracts\IdeaQueryInterface;
 
 class IdeaQuery extends Query implements IdeaQueryInterface {
 

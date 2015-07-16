@@ -1,7 +1,7 @@
-<?php namespace App\Repositories;
+<?php namespace SoapBox\Repositories;
 
 use Idea;
-use App\Contracts\IdeaRepositoryInterface;
+use SoapBox\Contracts\IdeaRepositoryInterface;
 
 class IdeaRepository extends EloquentRepository implements IdeaRepositoryInterface {
 
