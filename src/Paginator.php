@@ -1,11 +1,11 @@
 <?php namespace SoapBox;
 
-use Illuminate\Pagination\LengthAwarePaginator;
+use Paginator as IlluminatePaginator;
 
 class Paginator {
 
 	public function make($items, $total, $perPage, $currentPage = null, array $options = []) {
-		return new LengthAwarePaginator($items, $total, $perPage, $currentPage, $options);
+		return IlluminatePaginator::make($items->toArray(), $total, $perPage, $currentPage, $options);
 	}
 
 }
