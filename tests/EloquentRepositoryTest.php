@@ -1,11 +1,11 @@
-<?php
+<?php namespace Tests;
 
 use Mockery as m;
 use SoapBox\EloquentRepository;
 
 class ModelRepository extends EloquentRepository {};
 
-class EloquentRepositoryTest extends PHPUnit_Framework_TestCase {
+class EloquentRepositoryTest extends \PHPUnit_Framework_TestCase {
 
 	public function setUp() {
 		$this->mockFilterBag = m::mock('SoapBox\FilterBag');

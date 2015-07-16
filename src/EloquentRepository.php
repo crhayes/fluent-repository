@@ -1,10 +1,8 @@
 <?php namespace SoapBox;
 
 use Closure;
-use SoapBox\Paginator;
-use SoapBox\FilterBag;
-use SoapBox\Contracts\RepositoryInterface;
 use Illuminate\Database\Eloquent\Model;
+use SoapBox\Contracts\RepositoryInterface;
 
 abstract class EloquentRepository implements RepositoryInterface {
 

@@ -1,6 +1,6 @@
-<?php namespace SoapBox\Contracts;
+<?php namespace SoapBox\Ideas\Contracts;
 
-interface IdeaQueryInterface {
+interface FilterBag {
 
 	public function filterBySoapbox($id);
 

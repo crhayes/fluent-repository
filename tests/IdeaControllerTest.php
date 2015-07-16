@@ -1,12 +1,13 @@
-<?php
+<?php namespace Tests;
 
 use Mockery as m;
+use SoapBox\IdeaController;
 
-class IdeaControllerTest extends PHPUnit_Framework_TestCase {
+class IdeaControllerTest extends \PHPUnit_Framework_TestCase {
 
 	public function setUp() {
 		$this->ideaRepositoryMock = m::mock('SoapBox\Contracts\IdeaRepositoryInterface');
-		$this->ideaController = new SoapBox\IdeaController($this->ideaRepositoryMock);
+		$this->ideaController = new IdeaController($this->ideaRepositoryMock);
 	}
 
 	public function testCanBeInstantiated() {

@@ -1,9 +1,9 @@
-<?php
+<?php namespace Tests;
 
 use Mockery as m;
 use SoapBox\FilterBag;
 
-class FilterBagTest extends PHPUnit_Framework_TestCase {
+class FilterBagTest extends \PHPUnit_Framework_TestCase {
 
 	public function setUp() {
 		$this->filterBag = new FilterBag();
