@@ -1,6 +1,7 @@
 <?php namespace SoapBox;
 
 use Closure;
+use SoapBox\Paginator;
 use SoapBox\Contracts\Repository;
 use Illuminate\Database\Eloquent\Model;
 
