@@ -2,9 +2,11 @@
 
 use DB;
 use Closure;
+use Exception;
 use SoapBox\Paginator;
 use SoapBox\Contracts\Repository;
 use Illuminate\Database\Eloquent\Model;
+use SoapBox\Exceptions\DatabaseException;
 use SoapBox\Exceptions\RecordNotFoundException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -85,15 +87,27 @@ abstract class EloquentRepository implements Repository {
 	}
 
 	public function save(Model $model) {
-		return $model->save();
+		try {
+			return $model->save();
+		} catch (Exception $e) {
+			throw new DatabaseException();
+		}
 	}
 
 	public function delete(Model $model) {
-		return $model->delete();
+		try {
+			return $model->delete();
+		} catch (Exception $e) {
+			throw new DatabaseException();
+		}
 	}
 
 	public function purge(Model $model) {
-		return $model->forceDelete();
+		try {
+			return $model->forceDelete();
+		} catch (Exception $e) {
+			throw new DatabaseException();
+		}
 	}
 
 	public function transaction(Closure $callback) {

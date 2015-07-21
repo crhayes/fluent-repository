@@ -1,5 +1,6 @@
 <?php namespace Tests;
 
+use Exception;
 use Mockery as m;
 use SoapBox\EloquentRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -440,6 +441,17 @@ class EloquentRepositoryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertTrue($result);
 	}
 
+	/**
+	 * @expectedException SoapBox\Exceptions\DatabaseException
+	 */
+	public function testExceptionConvertedToDatabaseExceptionWhenSaveMethodCalled() {
+		$this->mockModel
+			->shouldReceive('save')->once()
+			->andThrow(new Exception);
+
+		$this->modelRepository->save($this->mockModel);
+	}
+
 	// -----------------------------------------------------------------
 	// 
 	// Test DELETE
@@ -456,6 +468,17 @@ class EloquentRepositoryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertTrue($result);
 	}
 
+	/**
+	 * @expectedException SoapBox\Exceptions\DatabaseException
+	 */
+	public function testExceptionConvertedToDatabaseExceptionWhenDeleteMethodCalled() {
+		$this->mockModel
+			->shouldReceive('delete')->once()
+			->andThrow(new Exception);
+
+		$this->modelRepository->delete($this->mockModel);
+	}
+
 	// -----------------------------------------------------------------
 	// 
 	// Test PURGE
@@ -470,6 +493,17 @@ class EloquentRepositoryTest extends \PHPUnit_Framework_TestCase {
 		$result = $this->modelRepository->purge($this->mockModel);
 
 		$this->assertTrue($result);
+	}
+
+	/**
+	 * @expectedException SoapBox\Exceptions\DatabaseException
+	 */
+	public function testExceptionConvertedToDatabaseExceptionWhenPurgeMethodCalled() {
+		$this->mockModel
+			->shouldReceive('forceDelete')->once()
+			->andThrow(new Exception);
+
+		$this->modelRepository->purge($this->mockModel);
 	}
 
 	// -----------------------------------------------------------------
