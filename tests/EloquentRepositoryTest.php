@@ -380,6 +380,8 @@ class EloquentRepositoryTest extends \PHPUnit_Framework_TestCase {
 		
 		$this->createNewQueryBuilderFromModel();
 
+		$this->shouldNotUseFilters();
+		
 		$this->mockQueryBuilder
 			->shouldReceive('count')->once()->andReturn($mockedResult);
 
