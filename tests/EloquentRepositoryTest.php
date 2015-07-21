@@ -452,4 +452,28 @@ class EloquentRepositoryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertTrue($result);
 	}
 
+	// -----------------------------------------------------------------
+	// 
+	// Test TRANSACTION
+	//
+	// -----------------------------------------------------------------
+
+	public function testCanProvideClosureToBeWrappedInATransaction() {
+		$mockConnection = m::mock('Illuminate\Database\Connection');
+		$mockedResult = 'this will be transacted.';
+		$mockedTransactionClosure = function () use ($mockedResult) {
+			return $mockedResult;
+		};
+
+		$this->mockModel
+			->shouldReceive('getConnection')->once()->andReturn($mockConnection);
+
+		$mockConnection
+			->shouldReceive('transaction')->once()->with($mockedTransactionClosure)->andReturnUsing($mockedTransactionClosure);
+
+		$result = $this->modelRepository->transaction($mockedTransactionClosure);
+
+		$this->assertSame($result, $mockedResult);
+	}
+
 }

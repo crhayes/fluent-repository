@@ -1,5 +1,6 @@
 <?php namespace SoapBox;
 
+use DB;
 use Closure;
 use SoapBox\Paginator;
 use SoapBox\Contracts\Repository;
@@ -87,6 +88,10 @@ abstract class EloquentRepository implements Repository {
 
 	public function purge(Model $model) {
 		return $model->forceDelete();
+	}
+
+	public function transaction(Closure $callback) {
+		return $this->model->getConnection()->transaction($callback);
 	}
 
 }

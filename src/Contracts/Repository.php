@@ -22,5 +22,7 @@ interface Repository {
 
 	public function purge(Model $model);
 
+	public function transaction(Closure $callback);
+
 }
 
