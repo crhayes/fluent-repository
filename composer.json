@@ -16,6 +16,7 @@
         }
     ],
     "require-dev": {
-        "mockery/mockery": "^0.9.4"
+        "mockery/mockery": "^0.9.4",
+        "illuminate/database": "~5.1"
     }
 }

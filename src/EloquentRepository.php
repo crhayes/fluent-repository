@@ -5,6 +5,8 @@ use Closure;
 use SoapBox\Paginator;
 use SoapBox\Contracts\Repository;
 use Illuminate\Database\Eloquent\Model;
+use SoapBox\Exceptions\RecordNotFoundException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 abstract class EloquentRepository implements Repository {
 
@@ -37,7 +39,11 @@ abstract class EloquentRepository implements Repository {
 			}
 		}
 
-		return $queryBuilder->find($id, $columns);
+		try {
+			return $queryBuilder->findOrFail($id, $columns);
+		} catch (ModelNotFoundException $e) {
+			throw new RecordNotFoundException();
+		}
 	}
 
 	public function paginate($perPage = 10, $page = 1, FilterBag $filterBag = null, array $columns = ['*']) {

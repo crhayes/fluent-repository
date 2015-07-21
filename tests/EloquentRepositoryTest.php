@@ -2,6 +2,7 @@
 
 use Mockery as m;
 use SoapBox\EloquentRepository;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ModelRepository extends EloquentRepository {};
 
@@ -145,7 +146,7 @@ class EloquentRepositoryTest extends \PHPUnit_Framework_TestCase {
 		$this->shouldNotUseFilters();
 
 		$this->mockQueryBuilder
-			->shouldReceive('find')->once()->with($id, $columns)->andReturn($mockedResult);
+			->shouldReceive('findOrFail')->once()->with($id, $columns)->andReturn($mockedResult);
 
 		$result = $this->modelRepository->find($id);
 
@@ -162,7 +163,7 @@ class EloquentRepositoryTest extends \PHPUnit_Framework_TestCase {
 		$this->shouldNotUseFilters();
 
 		$this->mockQueryBuilder
-			->shouldReceive('find')->once()->with($id, $columns)->andReturn($mockedResult);
+			->shouldReceive('findOrFail')->once()->with($id, $columns)->andReturn($mockedResult);
 
 		$result = $this->modelRepository->find($id, null, $columns);
 
@@ -179,7 +180,7 @@ class EloquentRepositoryTest extends \PHPUnit_Framework_TestCase {
 		$this->shouldUseFiltersAndReturn([]);
 
 		$this->mockQueryBuilder
-			->shouldReceive('find')->once()->with($id, $columns)->andReturn($mockedResult);
+			->shouldReceive('findOrFail')->once()->with($id, $columns)->andReturn($mockedResult);
 
 		$result = $this->modelRepository->find($id, $this->mockFilterBag);
 
@@ -198,11 +199,28 @@ class EloquentRepositoryTest extends \PHPUnit_Framework_TestCase {
 		$this->shouldUseFiltersAndReturn($mockReturn);
 
 		$this->mockQueryBuilder
-			->shouldReceive('find')->once()->with($id, $columns)->andReturn($mockedResult);
+			->shouldReceive('findOrFail')->once()->with($id, $columns)->andReturn($mockedResult);
 
 		$result = $this->modelRepository->find($id, $this->mockFilterBag, $columns);
 
 		$this->assertSame($result, $mockedResult);
+	}
+
+	/**
+	 * @expectedException SoapBox\Exceptions\RecordNotFoundException
+	 */
+	public function testModelNotFoundExceptionConvertedToRecordNotFoundException() {
+		$id = 1;
+		$columns = ['*'];
+
+		$this->createNewQueryBuilderFromModel();
+
+		$this->shouldNotUseFilters();
+
+		$this->mockQueryBuilder
+			->shouldReceive('findOrFail')->once()->with($id, $columns)->andThrow(new ModelNotFoundException);
+
+		$this->modelRepository->find($id);
 	}
 
 	// -----------------------------------------------------------------
