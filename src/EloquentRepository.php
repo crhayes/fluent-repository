@@ -65,6 +65,18 @@ abstract class EloquentRepository implements Repository {
 		return $queryBuilder->select($columns)->chunk($perChunk, $callback);
 	}
 
+	public function count(FilterBag $filterBag = null) {
+		$queryBuilder = $this->model->newQuery();
+
+		if ($filterBag) {
+			foreach ($filterBag->getFilters() as $filter) {
+				$filter($queryBuilder);
+			}
+		}
+
+		return $queryBuilder->count();
+	}
+
 	public function save(Model $model) {
 		return $model->save();
 	}

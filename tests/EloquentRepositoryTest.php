@@ -371,6 +371,41 @@ class EloquentRepositoryTest extends \PHPUnit_Framework_TestCase {
 
 	// -----------------------------------------------------------------
 	// 
+	// Test COUNT
+	//
+	// -----------------------------------------------------------------
+
+	public function testCanCountWithoutFilters() {
+		$mockedResult = 10;
+		
+		$this->createNewQueryBuilderFromModel();
+
+		$this->mockQueryBuilder
+			->shouldReceive('count')->once()->andReturn($mockedResult);
+
+		$result = $this->modelRepository->count();
+
+		$this->assertSame($result, $mockedResult);
+	}
+
+	public function testCanCountWithFilters() {
+		$mockedResult = 10;
+		$mockReturn = $this->getMockedFilterClosure();
+
+		$this->createNewQueryBuilderFromModel();
+
+		$this->shouldUseFiltersAndReturn($mockReturn);
+
+		$this->mockQueryBuilder
+			->shouldReceive('count')->once()->andReturn($mockedResult);
+
+		$result = $this->modelRepository->count($this->mockFilterBag);
+
+		$this->assertSame($result, $mockedResult);
+	}
+
+	// -----------------------------------------------------------------
+	// 
 	// Test SAVE
 	//
 	// -----------------------------------------------------------------

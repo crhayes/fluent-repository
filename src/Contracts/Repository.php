@@ -14,6 +14,8 @@ interface Repository {
 
 	public function chunk($perChunk, Closure $callback, FilterBag $filterBag, array $columns);
 
+	public function count(FilterBag $filterBag);
+
 	public function save(Model $model);
 
 	public function delete(Model $model);
