@@ -85,4 +85,9 @@ class FilterBagTest extends \PHPUnit_Framework_TestCase {
 		$this->assertSame(count($this->filterBag->getFilters()), 0);
 	}
 
+	public function testRemovingNonExistantFilterDoesNotBlowUp() {
+		$this->filterBag->removeFilter('noFilter');
+		$this->assertTrue(true);
+	}
+
 }
